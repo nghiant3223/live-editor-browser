@@ -27,20 +27,28 @@ public class ConcreteVisitor implements Visitor {
                     case "h1":
                         VBox block = new VBox();
 
-                        HashMap<String, String> h1InheritedStyle = new HashMap<>() {
+                        HashMap<String, String> blockInheritedStyle = new HashMap<>() {
+                            /* WARNING: DO NOT CHANGE THE ORDER OF putAll */
                             {
+                                /* Default style */
                                 putAll(DefaultStyle.getDefaultStyle(tagName));
+
+                                /* Global style */
                                 HashMap<String, String> globalStyle = GlobalCssProvider.getInstance().getStyles(tagName);
                                 if (globalStyle != null) {
                                     putAll(globalStyle);
                                 }
+
+                                /* Inherited style */
                                 putAll(inheritedStyle);
+
+                                /* Inline style */
                                 putAll(CssParser.parseInlineCss(childNode.attributes().get("style")));
                             }
                         };
 
-                        CssProcess.assignCssProperty(block, h1InheritedStyle);
-                        visit(childNode, block, h1InheritedStyle);
+                        CssProcess.assignCssProperty(block, blockInheritedStyle);
+                        visit(childNode, block, blockInheritedStyle);
                         parent.getChildren().add(block);
                         break;
                 }
