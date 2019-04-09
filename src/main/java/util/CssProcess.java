@@ -21,6 +21,7 @@ public class CssProcess {
                         node.setStyle("-fx-fill: " + value);
                         break;
                     case "font-weight":
+                        System.out.println("--------->>>>>>" + value);
                         node.setStyle("-fx-" + key + ": " + value);
                         break;
                 }
