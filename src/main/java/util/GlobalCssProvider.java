@@ -10,7 +10,7 @@ public class GlobalCssProvider {
         this.styles = CssParser.parseEmbeddedCss(document);
     }
 
-    public static void createIntance(String styles) {
+    public static void createInstance(String styles) {
         if (instance == null) {
             instance = new GlobalCssProvider(styles);
         }
