@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -47,31 +48,31 @@ public class ConcreteVisitor implements Visitor {
                             }
                         };
 
-                        CssProcess.assignCssProperty(block, blockInheritedStyle);
-                        visit(childNode, block, blockInheritedStyle);
+                        HashMap<String, String> legacyStyle = CssProcess.assignCssProperty(block, blockInheritedStyle);
+                        visit(childNode, block, legacyStyle);
                         parent.getChildren().add(block);
                         break;
                 }
             } else if (childNode instanceof TextNode) {
-                String text = ((TextNode) childNode).text();
-                Label label = new Label(text);
+                String content = ((TextNode) childNode).text();
+                Text text = new Text(content);
 
                 if (inheritedStyle.containsKey("font-size")) {
                     Pattern fontSizePattern = Pattern.compile("([0-9]+)px");
                     Matcher fontSizeMatcher = fontSizePattern.matcher(inheritedStyle.get("font-size"));
 
-                    System.out.println(inheritedStyle.get("font-size"));
                     if (fontSizeMatcher.find()) {
-                        label.setFont(Font.font("Ubuntu", Double.parseDouble(fontSizeMatcher.group(1))));
+                        text.setFont(Font.font("Ubuntu", Double.parseDouble(fontSizeMatcher.group(1))));
                     } else {
-                        label.setFont(Font.font("Ubuntu", 16));
+                        text.setFont(Font.font("Ubuntu", 16));
                     }
                 } else {
-                    label.setFont(Font.font("Ubuntu", 16));
+                    text.setFont(Font.font("Ubuntu", 16));
                 }
 
-                CssProcess.assignCssProperty(label, inheritedStyle);
-                parent.getChildren().add(label);
+                System.out.println("............." + inheritedStyle);
+                CssProcess.assignCssProperty(text, inheritedStyle);
+                parent.getChildren().add(text);
             }
         }
     }
