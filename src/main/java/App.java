@@ -25,7 +25,7 @@ public class App extends Application {
 
         Visitor concreteVisitor = new ConcreteVisitor();
         concreteVisitor.visit(body, root);
-
+        // Create Scene and setting.
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setTitle("MiniBrowser");
         primaryStage.setScene(scene);
@@ -33,6 +33,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        // Read .html file, parse and visit
         try {
             File file = new File("./src/main/java/" + FILE_NAME);
             Scanner sc = new Scanner(file);
@@ -47,7 +48,7 @@ public class App extends Application {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
+        // Start UI
         launch(args);
     }
 }
