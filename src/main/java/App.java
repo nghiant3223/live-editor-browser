@@ -1,18 +1,18 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import util.GlobalCssProvider;
 import visitor.ConcreteVisitor;
 import visitor.Visitor;
 
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class App extends Application {
@@ -21,10 +21,12 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        VBox root = new VBox(0);
+        VBox root = new VBox();
 
         Visitor concreteVisitor = new ConcreteVisitor();
-        concreteVisitor.visit(body, root);
+
+        concreteVisitor.visit(body, root, new HashMap<>());
+
         // Create Scene and setting.
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setTitle("MiniBrowser");
@@ -43,8 +45,10 @@ public class App extends Application {
                 fileContentBuilder.append(sc.nextLine());
             }
 
-            Document document = Jsoup.parse(fileContentBuilder.toString());
+            String fileContent = fileContentBuilder.toString();
+            Document document = Jsoup.parse(fileContent);
             body = document.getElementsByTag("body").get(0);
+            GlobalCssProvider.createIntance(fileContent);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
