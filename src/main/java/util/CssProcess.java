@@ -8,6 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CssProcess {
+    /**
+     * Assign suitable property to the node.
+     * @param node a Node instance to assign.
+     * @param style general style of `node`.
+     * @param nodeStyleToSet actual style of `node`, will be set in setStyle().
+     * @return legacy style that its children will inherit.
+     */
     public static HashMap<String, String> assignCssProperty(Node node, HashMap<String, String> style, StringBuilder nodeStyleToSet) {
         HashMap<String, String> legacyStyle = new HashMap<>();
 
@@ -27,18 +34,21 @@ public class CssProcess {
                 }
             } else if (node instanceof Pane) {
                 switch (key) {
+                    case "color":
+                    case "font-weight":
+                    case "font-size":
+                        legacyStyle.put(key, value); /* Legacy style that its children will inherit */
+                        break;
                     case "text-align":
                         switch (value) {
                             case "center":
                                 nodeStyleToSet.append("-fx-alignment: center;");
+                                legacyStyle.put(key, value);
                                 break;
                             default:
                                 nodeStyleToSet.append("-fx-alignment: center-" + value + ";");
+                                legacyStyle.put(key, value);
                         }
-                    case "color":
-                    case "font-weight":
-                    case "font-size":
-                        legacyStyle.put(key, value);
                         break;
                     case "padding":
                         nodeStyleToSet.append("-fx-padding: " + value + " " + value + " " + value + " " + value + ";'");

@@ -1,5 +1,8 @@
 package visitor;
 
+import adapter.ElementAdapter;
+import adapter.TextNodeAdapter;
+import adapter.VisitableAdapter;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -19,52 +22,50 @@ public class ConcreteVisitor implements Visitor {
     @Override
     public void visit(Element node, Pane parent, HashMap<String, String> inheritedStyle) {
         String tagName = node.tagName();
-        switch (tagName) {
-            case "body":
-            case "div":
-            case "h1":
-            case "h2":
-            case "h3":
-            case "h4":
-            case "h5":
-            case "h6":
-                VBox block = new VBox();
+        VBox block = new VBox();
 
-                /* WARNING: DO NOT CHANGE THE ORDER OF putAll */
-                HashMap<String, String> blockInheritedStyle = new HashMap<>() {
-                    {
-                        /* Default style */
-                        putAll(DefaultStyle.getDefaultStyle(tagName));
+        /* WARNING: DO NOT CHANGE THE ORDER OF putAll */
+        HashMap<String, String> blockInheritedStyle = new HashMap<>() {
+            {
+                /* Default style */
+                putAll(DefaultStyle.getDefaultStyle(tagName));
 
-                        /* Global style */
-                        HashMap<String, String> globalStyle = GlobalCssProvider.getInstance().getStyles(tagName);
-                        if (globalStyle != null) {
-                            putAll(globalStyle);
-                        }
-
-                        /* Inherited style */
-                        putAll(inheritedStyle);
-
-                        /* Inline style */
-                        putAll(CssParser.parseInlineCss(node.attributes().get("style")));
-                    }
-                };
-
-                StringBuilder blockStyleToSet = new StringBuilder();
-                HashMap<String, String> legacyStyle = CssProcess.assignCssProperty(block, blockInheritedStyle, blockStyleToSet);
-
-                for (Node childNode : node.childNodes()) {
-                    if (childNode instanceof Element) {
-                        visit(((Element) childNode), block, legacyStyle);
-                    } else if (childNode instanceof TextNode) {
-                        visit(((TextNode) childNode), block, legacyStyle);
-                    }
+                /* Global style */
+                HashMap<String, String> globalStyle = GlobalCssProvider.getInstance().getStyles(tagName);
+                if (globalStyle != null) {
+                    putAll(globalStyle);
                 }
 
-                block.setStyle(blockStyleToSet.toString());
-                parent.getChildren().add(block);
-                break;
+                /* Inherited style */
+                putAll(inheritedStyle);
+
+                /* Inline style */
+                putAll(CssParser.parseInlineCss(node.attributes().get("style")));
+            }
+        };
+
+        /* Assign block suitable style and get actual style `blockStyleToSet` for later setStyle() */
+        StringBuilder blockStyleToSet = new StringBuilder();
+        HashMap<String, String> legacyStyle = CssProcess.assignCssProperty(block, blockInheritedStyle, blockStyleToSet);
+
+        /* Visit its children */
+        for (Node childNode : node.childNodes()) {
+            VisitableAdapter visitableAdapter;
+
+            if (childNode instanceof Element) {
+                visitableAdapter = new ElementAdapter((Element) childNode);
+                visitableAdapter.accept(this, block, legacyStyle);
+            } else if (childNode instanceof TextNode) {
+                visitableAdapter = new TextNodeAdapter((TextNode) childNode);
+                visitableAdapter.accept(this, block, legacyStyle);
+            }
         }
+
+        /* Set actual style */
+        block.setStyle(blockStyleToSet.toString());
+
+        /* Add the block to its container */
+        parent.getChildren().add(block);
     }
 
     @Override
@@ -77,10 +78,14 @@ public class ConcreteVisitor implements Visitor {
         if (!spaceMatcher.find()) {
             Text text = new Text(content);
 
+            /* Assign text suitable style and get actual style `textStyleToSet` for later setStyle() */
             StringBuilder textStyleToSet = new StringBuilder();
             CssProcess.assignCssProperty(text, inheritedStyle, textStyleToSet);
 
+            /* Set actual style */
             text.setStyle(textStyleToSet.toString());
+
+            /* Add the text to its container */
             parent.getChildren().add(text);
         }
     }

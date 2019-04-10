@@ -1,8 +1,8 @@
+import adapter.ElementAdapter;
+import adapter.VisitableAdapter;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,8 +25,8 @@ public class App extends Application {
     public void start(Stage primaryStage) throws Exception {
         VBox root = new VBox();
 
-        Visitor concreteVisitor = new ConcreteVisitor();
-        concreteVisitor.visit(body, root, new HashMap<>());
+        VisitableAdapter visitableAdapter = new ElementAdapter(body);
+        visitableAdapter.accept(new ConcreteVisitor(), root, new HashMap<>());
 
         /* Create Scene and setting */
         Scene scene = new Scene(root, 800, 600);
@@ -36,8 +36,8 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        /* Read .html file, parse and visit */
         try {
+            /* Read index.html */
             File file = new File("./src/main/java/" + FILE_NAME);
             Scanner sc = new Scanner(file);
 
@@ -45,10 +45,13 @@ public class App extends Application {
             while (sc.hasNextLine()) {
                 fileContentBuilder.append(sc.nextLine());
             }
-
             String fileContent = fileContentBuilder.toString();
+
+            /* Get `body` node */
             Document document = Jsoup.parse(fileContent);
             body = document.getElementsByTag("body").get(0);
+
+            /* Create global style holder */
             GlobalCssProvider.createInstance(fileContent);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
