@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CssParser {
-    private static Pattern tagPattern = Pattern.compile("([a-z0-9]+)[ \\t\\r\\n\\f]*\\{[ \\t\\r\\n\\f]*(?:((?:[a-z\\-]+[ \\t\\r\\n\\f]*:[ \\t\\r\\n\\f]*[a-z0-9]+;[ \\t\\r\\n\\f]*)*[ \\t\\r\\n\\f]*(?:[a-z\\-]+[ \\t\\r\\n\\f]*:[ \\t\\r\\n\\f]*[a-z0-9]+;?))[ \\t\\r\\n\\f]*)?\\}");
+    private static Pattern tagPattern = Pattern.compile("([a-z0-9\\.\\-#]+)[ \\t\\r\\n\\f]*\\{[ \\t\\r\\n\\f]*(?:((?:[a-z\\-]+[ \\t\\r\\n\\f]*:[ \\t\\r\\n\\f]*[a-z0-9]+;[ \\t\\r\\n\\f]*)*[ \\t\\r\\n\\f]*(?:[a-z\\-]+[ \\t\\r\\n\\f]*:[ \\t\\r\\n\\f]*[a-z0-9]+;?))[ \\t\\r\\n\\f]*)?\\}");
     private static Pattern propertyPattern = Pattern.compile("([a-z\\-]+)[ \\t\\r\\n\\f]*:[ \\t\\r\\n\\f]*([a-z0-9\\-]+);?");
 
     public static HashMap<String, HashMap<String, String>> parseEmbeddedCss(String text) {

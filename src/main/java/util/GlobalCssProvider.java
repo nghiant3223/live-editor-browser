@@ -16,8 +16,8 @@ public class GlobalCssProvider {
         }
     }
 
-    public HashMap<String, String> getStyles(String tagname) {
-        return styles.get(tagname);
+    public HashMap<String, String> getStyles(String tagName) {
+        return styles.get(tagName);
     }
 
     public static GlobalCssProvider getInstance() {

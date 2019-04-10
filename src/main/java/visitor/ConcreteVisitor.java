@@ -2,7 +2,6 @@ package visitor;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -19,55 +18,56 @@ import java.util.regex.Pattern;
 public class ConcreteVisitor implements Visitor {
     @Override
     public void visit(Node node, Pane parent, HashMap<String, String> inheritedStyle) {
-        for (Node childNode : node.childNodes()) {
-            if (childNode instanceof Element) {
-                String tagName = ((Element) childNode).tagName();
-                switch (tagName) {
-                    case "div":
-                    case "h1":
-                        VBox block = new VBox();
+        if (node instanceof Element) {
+            String tagName = ((Element) node).tagName();
+            switch (tagName) {
+                case "body":
+                case "div":
+                case "h1":
+                case "h2":
+                case "h3":
+                case "h4":
+                case "h5":
+                case "h6":
+                    VBox block = new VBox();
 
-                        HashMap<String, String> blockInheritedStyle = new HashMap<>() {
-                            /* WARNING: DO NOT CHANGE THE ORDER OF putAll */
-                            {
-                                /* Default style */
-                                putAll(DefaultStyle.getDefaultStyle(tagName));
+                    /* WARNING: DO NOT CHANGE THE ORDER OF putAll */
+                    HashMap<String, String> blockInheritedStyle = new HashMap<>() {
+                        {
+                            /* Default style */
+                            putAll(DefaultStyle.getDefaultStyle(tagName));
 
-                                /* Global style */
-                                HashMap<String, String> globalStyle = GlobalCssProvider.getInstance().getStyles(tagName);
-                                if (globalStyle != null) {
-                                    putAll(globalStyle);
-                                }
-
-                                /* Inherited style */
-                                putAll(inheritedStyle);
-
-                                /* Inline style */
-                                putAll(CssParser.parseInlineCss(childNode.attributes().get("style")));
+                            /* Global style */
+                            HashMap<String, String> globalStyle = GlobalCssProvider.getInstance().getStyles(tagName);
+                            if (globalStyle != null) {
+                                putAll(globalStyle);
                             }
-                        };
 
-                        HashMap<String, String> legacyStyle = CssProcess.assignCssProperty(block, blockInheritedStyle);
+                            /* Inherited style */
+                            putAll(inheritedStyle);
+
+                            /* Inline style */
+                            putAll(CssParser.parseInlineCss(node.attributes().get("style")));
+                        }
+                    };
+
+                    HashMap<String, String> legacyStyle = CssProcess.assignCssProperty(block, blockInheritedStyle);
+
+                    for (Node childNode : node.childNodes()) {
                         visit(childNode, block, legacyStyle);
-                        parent.getChildren().add(block);
-                        break;
-                }
-            } else if (childNode instanceof TextNode) {
-                String content = ((TextNode) childNode).text();
-                Text text = new Text(content);
-
-                if (inheritedStyle.containsKey("font-size")) {
-                    Pattern fontSizePattern = Pattern.compile("([0-9]+)px");
-                    Matcher fontSizeMatcher = fontSizePattern.matcher(inheritedStyle.get("font-size"));
-
-                    if (fontSizeMatcher.find()) {
-                        text.setFont(Font.font("Ubuntu", Double.parseDouble(fontSizeMatcher.group(1))));
-                    } else {
-                        text.setFont(Font.font("Ubuntu", 16));
                     }
-                } else {
-                    text.setFont(Font.font("Ubuntu", 16));
-                }
+
+                    parent.getChildren().add(block);
+                    break;
+            }
+        } else if (node instanceof TextNode) {
+            String content = ((TextNode) node).text();
+            Pattern space = Pattern.compile("^[ \\t\\r\\n\\f]+$");
+            Matcher spaceMatcher = space.matcher(content);
+
+            /* If content is not space, tab, newline, return, ... */
+            if (!spaceMatcher.find()) {
+                Text text = new Text(content);
 
                 CssProcess.assignCssProperty(text, inheritedStyle);
                 parent.getChildren().add(text);

@@ -20,13 +20,21 @@ public class CssProcess {
                     case "color":
                         node.setStyle("-fx-fill: " + value);
                         break;
-                    case "font-weight":
-                        System.out.println("--------->>>>>>" + value);
+                    /* Includes font-family, font-size, font-weight */
+                    default:
                         node.setStyle("-fx-" + key + ": " + value);
                         break;
                 }
             } else if (node instanceof Pane) {
                 switch (key) {
+                    case "text-align":
+                        switch (value) {
+                            case "center":
+                                node.setStyle("-fx-alignment: center");
+                                break;
+                            default:
+                                node.setStyle("-fx-alignment: center-" + value);
+                        }
                     case "color":
                     case "font-weight":
                     case "font-size":
@@ -35,10 +43,8 @@ public class CssProcess {
                     case "padding":
                         node.setStyle("-fx-padding: " + value + " " + value + " " + value + " " + value);
                         break;
-                    case "background-color":
-                    case "border-width":
-                    case "border-color":
-                    case "border-style":
+                    /* Includes opacity, background-color, border-width, border-color, border-style */
+                    default:
                         node.setStyle("-fx-" + key + ": " + value);
                         break;
                 }
