@@ -14,13 +14,28 @@ import util.CssProcess;
 import config.DefaultStyle;
 import util.GlobalCssProvider;
 
+import java.util.DuplicateFormatFlagsException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConcreteVisitor implements Visitor {
+    public boolean idHasExisted(Node node) {
+        String nodeId = node.attributes().get("id");
+
+        if (nodeId == "" || !GlobalCssProvider.getInstance().hasId(nodeId)) {
+            GlobalCssProvider.getInstance().addId(nodeId);
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void visit(Element node, Pane parent, HashMap<String, String> inheritedStyle) {
+        if (idHasExisted(node)) {
+            throw new DuplicateFormatFlagsException("Id has existed");
+        }
+
         String tagName = node.tagName();
         VBox block = new VBox();
 
@@ -30,7 +45,7 @@ public class ConcreteVisitor implements Visitor {
                 /* Default style */
                 putAll(DefaultStyle.getDefaultStyle(tagName));
 
-                /* Global style */
+                /* Global tag style */
                 HashMap<String, String> globalStyle = GlobalCssProvider.getInstance().getStyles(tagName);
                 if (globalStyle != null) {
                     putAll(globalStyle);
@@ -38,6 +53,18 @@ public class ConcreteVisitor implements Visitor {
 
                 /* Inherited style */
                 putAll(inheritedStyle);
+
+                /* Id style */
+                HashMap<String, String> idStyle = GlobalCssProvider.getInstance().getStyles("#" + node.attributes().get("id"));
+                if (idStyle != null) {
+                    putAll(idStyle);
+                }
+
+                /* Class style */
+                HashMap<String, String> classStyle = GlobalCssProvider.getInstance().getStyles("." + node.attributes().get("class"));
+                if (classStyle != null) {
+                    putAll(classStyle);
+                }
 
                 /* Inline style */
                 putAll(CssParser.parseInlineCss(node.attributes().get("style")));
