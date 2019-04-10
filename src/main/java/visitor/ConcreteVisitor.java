@@ -17,61 +17,71 @@ import java.util.regex.Pattern;
 
 public class ConcreteVisitor implements Visitor {
     @Override
-    public void visit(Node node, Pane parent, HashMap<String, String> inheritedStyle) {
-        if (node instanceof Element) {
-            String tagName = ((Element) node).tagName();
-            switch (tagName) {
-                case "body":
-                case "div":
-                case "h1":
-                case "h2":
-                case "h3":
-                case "h4":
-                case "h5":
-                case "h6":
-                    VBox block = new VBox();
+    public void visit(Element node, Pane parent, HashMap<String, String> inheritedStyle) {
+        String tagName = node.tagName();
+        switch (tagName) {
+            case "body":
+            case "div":
+            case "h1":
+            case "h2":
+            case "h3":
+            case "h4":
+            case "h5":
+            case "h6":
+                VBox block = new VBox();
 
-                    /* WARNING: DO NOT CHANGE THE ORDER OF putAll */
-                    HashMap<String, String> blockInheritedStyle = new HashMap<>() {
-                        {
-                            /* Default style */
-                            putAll(DefaultStyle.getDefaultStyle(tagName));
+                /* WARNING: DO NOT CHANGE THE ORDER OF putAll */
+                HashMap<String, String> blockInheritedStyle = new HashMap<>() {
+                    {
+                        /* Default style */
+                        putAll(DefaultStyle.getDefaultStyle(tagName));
 
-                            /* Global style */
-                            HashMap<String, String> globalStyle = GlobalCssProvider.getInstance().getStyles(tagName);
-                            if (globalStyle != null) {
-                                putAll(globalStyle);
-                            }
-
-                            /* Inherited style */
-                            putAll(inheritedStyle);
-
-                            /* Inline style */
-                            putAll(CssParser.parseInlineCss(node.attributes().get("style")));
+                        /* Global style */
+                        HashMap<String, String> globalStyle = GlobalCssProvider.getInstance().getStyles(tagName);
+                        if (globalStyle != null) {
+                            putAll(globalStyle);
                         }
-                    };
 
-                    HashMap<String, String> legacyStyle = CssProcess.assignCssProperty(block, blockInheritedStyle);
+                        /* Inherited style */
+                        putAll(inheritedStyle);
 
-                    for (Node childNode : node.childNodes()) {
-                        visit(childNode, block, legacyStyle);
+                        /* Inline style */
+                        putAll(CssParser.parseInlineCss(node.attributes().get("style")));
                     }
+                };
 
-                    parent.getChildren().add(block);
-                    break;
-            }
-        } else if (node instanceof TextNode) {
-            String content = ((TextNode) node).text();
-            Pattern space = Pattern.compile("^[ \\t\\r\\n\\f]+$");
-            Matcher spaceMatcher = space.matcher(content);
+                StringBuilder blockStyleToSet = new StringBuilder();
+                HashMap<String, String> legacyStyle = CssProcess.assignCssProperty(block, blockInheritedStyle, blockStyleToSet);
 
-            /* If content is not space, tab, newline, return, ... */
-            if (!spaceMatcher.find()) {
-                Text text = new Text(content);
+                for (Node childNode : node.childNodes()) {
+                    if (childNode instanceof Element) {
+                        visit(((Element) childNode), block, legacyStyle);
+                    } else if (childNode instanceof TextNode) {
+                        visit(((TextNode) childNode), block, legacyStyle);
+                    }
+                }
 
-                CssProcess.assignCssProperty(text, inheritedStyle);
-                parent.getChildren().add(text);
-            }
+                block.setStyle(blockStyleToSet.toString());
+                parent.getChildren().add(block);
+                break;
+        }
+    }
+
+    @Override
+    public void visit(TextNode node, Pane parent, HashMap<String, String> inheritedStyle) {
+        String content = node.text();
+        Pattern space = Pattern.compile("^[ \\t\\r\\n\\f]+$");
+        Matcher spaceMatcher = space.matcher(content);
+
+        /* If content is not space, tab, newline, return, ... */
+        if (!spaceMatcher.find()) {
+            Text text = new Text(content);
+
+            StringBuilder textStyleToSet = new StringBuilder();
+            CssProcess.assignCssProperty(text, inheritedStyle, textStyleToSet);
+
+            text.setStyle(textStyleToSet.toString());
+            parent.getChildren().add(text);
         }
     }
 }
