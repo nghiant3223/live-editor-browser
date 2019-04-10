@@ -1,9 +1,9 @@
 package visitor;
 
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
@@ -27,43 +27,50 @@ public class ConcreteVisitor implements Visitor {
                     case "h1":
                         VBox block = new VBox();
 
-                        HashMap<String, String> h1InheritedStyle = new HashMap<>() {
+                        HashMap<String, String> blockInheritedStyle = new HashMap<>() {
+                            /* WARNING: DO NOT CHANGE THE ORDER OF putAll */
                             {
+                                /* Default style */
                                 putAll(DefaultStyle.getDefaultStyle(tagName));
+
+                                /* Global style */
                                 HashMap<String, String> globalStyle = GlobalCssProvider.getInstance().getStyles(tagName);
                                 if (globalStyle != null) {
                                     putAll(globalStyle);
                                 }
+
+                                /* Inherited style */
                                 putAll(inheritedStyle);
+
+                                /* Inline style */
                                 putAll(CssParser.parseInlineCss(childNode.attributes().get("style")));
                             }
                         };
 
-                        CssProcess.assignCssProperty(block, h1InheritedStyle);
-                        visit(childNode, block, h1InheritedStyle);
+                        HashMap<String, String> legacyStyle = CssProcess.assignCssProperty(block, blockInheritedStyle);
+                        visit(childNode, block, legacyStyle);
                         parent.getChildren().add(block);
                         break;
                 }
             } else if (childNode instanceof TextNode) {
-                String text = ((TextNode) childNode).text();
-                Label label = new Label(text);
+                String content = ((TextNode) childNode).text();
+                Text text = new Text(content);
 
                 if (inheritedStyle.containsKey("font-size")) {
                     Pattern fontSizePattern = Pattern.compile("([0-9]+)px");
                     Matcher fontSizeMatcher = fontSizePattern.matcher(inheritedStyle.get("font-size"));
 
-                    System.out.println(inheritedStyle.get("font-size"));
                     if (fontSizeMatcher.find()) {
-                        label.setFont(Font.font("Ubuntu", Double.parseDouble(fontSizeMatcher.group(1))));
+                        text.setFont(Font.font("Ubuntu", Double.parseDouble(fontSizeMatcher.group(1))));
                     } else {
-                        label.setFont(Font.font("Ubuntu", 16));
+                        text.setFont(Font.font("Ubuntu", 16));
                     }
                 } else {
-                    label.setFont(Font.font("Ubuntu", 16));
+                    text.setFont(Font.font("Ubuntu", 16));
                 }
 
-                CssProcess.assignCssProperty(label, inheritedStyle);
-                parent.getChildren().add(label);
+                CssProcess.assignCssProperty(text, inheritedStyle);
+                parent.getChildren().add(text);
             }
         }
     }

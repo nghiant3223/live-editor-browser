@@ -48,7 +48,7 @@ public class App extends Application {
             String fileContent = fileContentBuilder.toString();
             Document document = Jsoup.parse(fileContent);
             body = document.getElementsByTag("body").get(0);
-            GlobalCssProvider.createIntance(fileContent);
+            GlobalCssProvider.createInstance(fileContent);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
