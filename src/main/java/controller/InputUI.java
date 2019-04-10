@@ -8,7 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TextArea;
 import observer.ObservableTextArea;
+import observer.ObserverGeneric;
 import observer.ObserverTextArea;
+import observer.Subject;
 import org.jsoup.nodes.Element;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,8 +24,9 @@ public class InputUI implements Initializable {
     private Button btnCompile;
 
     private static Element body;
-    private static ObservableTextArea observableTextArea;
-    private static ObserverTextArea observerTextArea;
+    private static Subject observableTextArea;
+    private static ObserverGeneric observerGeneric;
+
 
     @Override
     public void initialize(URL localion, ResourceBundle resources){
@@ -36,7 +39,7 @@ public class InputUI implements Initializable {
             }
         });
         observableTextArea = new ObservableTextArea();
-        observerTextArea = new ObserverTextArea(observableTextArea, this.vboxRoot);
+        observerGeneric = new ObserverTextArea(observableTextArea, this.vboxRoot);
     }
     public InputUI(){
 
@@ -44,7 +47,7 @@ public class InputUI implements Initializable {
 
     public void onChangeInputTxtEvent(){
         vboxRoot.getChildren().clear();
-        observerTextArea.requestUpdate(InputTxt.getText());
+        observableTextArea.setState(InputTxt.getText());
     }
 
 

@@ -10,12 +10,13 @@ import util.GlobalCssProvider;
 import visitor.ConcreteVisitor;
 import java.util.HashMap;
 
-public class ObserverTextArea extends  ObserverAbstract{
+public class ObserverTextArea implements ObserverGeneric{
 
     private VBox vboxRoot;
     private Element body;
+    private Subject subject;
 
-    public ObserverTextArea(ObservableTextArea subject, VBox vboxroot){
+    public ObserverTextArea(Subject subject, VBox vboxroot){
         this.subject = subject;
         this.subject.attach(this);
         this.vboxRoot = vboxroot;
@@ -31,7 +32,5 @@ public class ObserverTextArea extends  ObserverAbstract{
         visitableAdapter.accept(new ConcreteVisitor(), this.vboxRoot, new HashMap<>());
     }
 
-    public void requestUpdate(String state){
-        this.subject.setState(state);
-    }
+
 }
