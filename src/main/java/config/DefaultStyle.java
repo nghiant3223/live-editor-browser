@@ -25,7 +25,7 @@ public class DefaultStyle {
                 return new HashMap<>() {
                     {
                         put("font-weight", "bold");
-                        put("font-size", "28px");
+                        put("font-size", "20px");
                     }
                 };
 

@@ -1,0 +1,31 @@
+.panelTitle{
+    -fx-background-color: #7542af;
+}
+.labelTitle{
+    -fx-font-size: 30px;
+    -fx-text-fill: #fcf9f9;
+    -fx-alignment: center;
+}
+.paneSplit{
+    -fx-background-color:#c47bce;
+}
+.vboxLeftRight{
+    -fx-background-color:#b3cbe5;
+}
+.labelInOutput{
+    -fx-font-weight: bold;
+    -fx-text-fill: #e01692;
+
+}
+.btnCompile{
+    -fx-font-weight: bold;
+    -fx-text-fill: #13bc07;
+}
+
+.ContainerAnchor{
+    -fx-background-color:#f48995;
+}
+
+.vboxOutPut{
+     -fx-background-color: #ffffff;
+}

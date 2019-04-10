@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="549.0" prefWidth="827.0" styleClass="ContainerAnchor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InputUI">
+   <children>
+      <Pane layoutX="202.0" layoutY="30.0" prefHeight="58.0" prefWidth="431.0" styleClass="panelTitle">
+         <children>
+            <Label layoutX="113.0" layoutY="7.0" prefHeight="34.0" prefWidth="205.0" styleClass="labelTitle" text="HTML Parser" textFill="#642472">
+               <font>
+                  <Font name="Times New Roman" size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <HBox layoutX="45.0" layoutY="115.0" prefHeight="420.0" prefWidth="746.0">
+         <children>
+            <VBox prefHeight="420.0" prefWidth="371.0" styleClass="vboxLeftRight">
+               <children>
+                  <Label prefHeight="33.0" prefWidth="70.0" styleClass="labelInOutput" text="Input HTML" />
+                  <TextArea fx:id="InputTxt" prefHeight="361.0" prefWidth="366.0" />
+                  <Button fx:id="btnCompile" mnemonicParsing="false" onMouseReleased="#onChangeInputTxtEvent" styleClass="btnCompile" text="Compile" />
+               </children>
+            </VBox>
+            <Pane prefHeight="420.0" prefWidth="29.0" styleClass="paneSplit" />
+            <VBox layoutX="10.0" layoutY="10.0" prefHeight="420.0" prefWidth="362.0" styleClass="vboxLeftRight">
+               <children>
+                  <Label prefHeight="33.0" prefWidth="84.0" styleClass="labelInOutput" text="Parsed Output" />
+                  <VBox fx:id="vboxRoot" prefHeight="362.0" prefWidth="357.0" styleClass="vboxOutPut" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
