@@ -1,6 +1,8 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,10 +26,9 @@ public class App extends Application {
         VBox root = new VBox();
 
         Visitor concreteVisitor = new ConcreteVisitor();
-
         concreteVisitor.visit(body, root, new HashMap<>());
 
-        // Create Scene and setting.
+        /* Create Scene and setting */
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setTitle("MiniBrowser");
         primaryStage.setScene(scene);
@@ -35,7 +36,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        // Read .html file, parse and visit
+        /* Read .html file, parse and visit */
         try {
             File file = new File("./src/main/java/" + FILE_NAME);
             Scanner sc = new Scanner(file);
@@ -52,7 +53,7 @@ public class App extends Application {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        // Start UI
+
         launch(args);
     }
 }
