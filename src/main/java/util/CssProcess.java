@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CssProcess {
-    public static HashMap<String, String> assignCssProperty(Node node, HashMap<String, String> style) {
+    public static HashMap<String, String> assignCssProperty(Node node, HashMap<String, String> style, StringBuilder nodeStyleToSet) {
         HashMap<String, String> legacyStyle = new HashMap<>();
 
         for (Map.Entry<String, String> entry : style.entrySet()) {
@@ -18,11 +18,11 @@ public class CssProcess {
             if (node instanceof Text) {
                 switch (key) {
                     case "color":
-                        node.setStyle("-fx-fill: " + value);
+                        nodeStyleToSet.append("-fx-fill: " + value + ";");
                         break;
                     /* Includes font-family, font-size, font-weight */
                     default:
-                        node.setStyle("-fx-" + key + ": " + value);
+                        nodeStyleToSet.append("-fx-" + key + ": " + value + ";");
                         break;
                 }
             } else if (node instanceof Pane) {
@@ -30,10 +30,10 @@ public class CssProcess {
                     case "text-align":
                         switch (value) {
                             case "center":
-                                node.setStyle("-fx-alignment: center");
+                                nodeStyleToSet.append("-fx-alignment: center;");
                                 break;
                             default:
-                                node.setStyle("-fx-alignment: center-" + value);
+                                nodeStyleToSet.append("-fx-alignment: center-" + value + ";");
                         }
                     case "color":
                     case "font-weight":
@@ -41,11 +41,11 @@ public class CssProcess {
                         legacyStyle.put(key, value);
                         break;
                     case "padding":
-                        node.setStyle("-fx-padding: " + value + " " + value + " " + value + " " + value);
+                        nodeStyleToSet.append("-fx-padding: " + value + " " + value + " " + value + " " + value + ";'");
                         break;
                     /* Includes opacity, background-color, border-width, border-color, border-style */
                     default:
-                        node.setStyle("-fx-" + key + ": " + value);
+                        nodeStyleToSet.append("-fx-" + key + ": " + value + ";");
                         break;
                 }
             }
