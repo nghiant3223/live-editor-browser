@@ -1,9 +1,13 @@
 package controller;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import observer.ObservableTextArea;
+import observer.ObserverLineIndicatorVBox;
 import observer.ObserverVBox;
 import singleton.GlobalCssProvider;
 
@@ -14,8 +18,6 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class Container implements Initializable {
-    private ObserverVBox outputVBox;
-
     @FXML
     private VBox lineIndicatorVBox;
 
@@ -31,9 +33,19 @@ public class Container implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        outputVBox = new ObserverVBox(this.rootVBox);
+        ObserverVBox outputVBox = new ObserverVBox(this.rootVBox);
+        ObserverLineIndicatorVBox lineIndicatorVBox = new ObserverLineIndicatorVBox(this.lineIndicatorVBox);
+
         inputTextArea.addObserver(outputVBox);
+        inputTextArea.addObserver(lineIndicatorVBox);
         inputTextArea.textProperty().addListener((inputTextAreaValue, s, s2) -> onChangeInputTxtEvent());
+        inputTextArea.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.TAB) {
+                String s = "    ";
+                inputTextArea.insertText(inputTextArea.getCaretPosition(), s);
+                e.consume();
+            }
+        });
 
         try {
             /* Read index.html */

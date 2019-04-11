@@ -3,19 +3,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <?import observer.ObservableTextArea?>
-<AnchorPane maxHeight="600" maxWidth="800" styleClass="ContainerAnchor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Container">
+
+<AnchorPane maxHeight="600" maxWidth="1200" styleClass="ContainerAnchor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Container">
    <children>
-      <HBox>
+      <HBox spacing="-2">
          <children>
             <VBox fx:id="lineIndicatorVBox" prefHeight="600" prefWidth="20" styleClass="lineIndicatorVBox" />
-            <VBox prefHeight="420.0" prefWidth="371.0">
+            <VBox prefHeight="600" prefWidth="590" >
                <children>
-                  <ObservableTextArea fx:id="inputTextArea" prefHeight="600" prefWidth="380" styleClass="inputTextArea"/>
+                  <ObservableTextArea fx:id="inputTextArea" prefHeight="600" prefWidth="590" styleClass="inputTextArea"/>
                </children>
             </VBox>
-            <VBox fx:id="rootVBox" prefHeight="362.0" prefWidth="357.0" styleClass="outputVBox" />
+            <VBox fx:id="rootVBox" prefHeight="600" prefWidth="590" styleClass="outputVBox" />
          </children>
       </HBox>
    </children>
