@@ -53,6 +53,9 @@ public class CssProcess {
                     case "padding":
                         nodeStyleToSet.append("-fx-padding: " + value + " " + value + " " + value + " " + value + ";");
                         break;
+                    case "background":
+                        nodeStyleToSet.append("-fx-background-color: " + value);
+                        break;
                     /* Includes opacity, background-color, border-width, border-color, border-style */
                     default:
                         nodeStyleToSet.append("-fx-" + key + ": " + value + ";");
