@@ -27,10 +27,10 @@ public class CssProcess {
                     case "color":
                         nodeStyleToSet.append("-fx-fill: " + value + ";");
                         break;
+
                     /* Includes font-family, font-size, font-weight */
                     default:
                         nodeStyleToSet.append("-fx-" + key + ": " + value + ";");
-                        break;
                 }
             } else if (node instanceof Pane) {
                 switch (key) {
@@ -39,6 +39,7 @@ public class CssProcess {
                     case "font-size":
                         legacyStyle.put(key, value); /* Legacy style that its children will inherit */
                         break;
+
                     case "text-align":
                         switch (value) {
                             case "center":
@@ -50,16 +51,18 @@ public class CssProcess {
                                 legacyStyle.put(key, value);
                         }
                         break;
+
                     case "padding":
                         nodeStyleToSet.append("-fx-padding: " + value + " " + value + " " + value + " " + value + ";");
                         break;
+
                     case "background":
                         nodeStyleToSet.append("-fx-background-color: " + value);
                         break;
+
                     /* Includes opacity, background-color, border-width, border-color, border-style */
                     default:
                         nodeStyleToSet.append("-fx-" + key + ": " + value + ";");
-                        break;
                 }
             }
         }

@@ -10,10 +10,10 @@ import singleton.GlobalCssProvider;
 import visitor.ConcreteVisitor;
 import java.util.HashMap;
 
-public class ObserverTextArea implements   Observer<String> {
+public class ObserverVBox implements   Observer<String> {
     private VBox rootVBox;
 
-    public ObserverTextArea(VBox rootVBox){
+    public ObserverVBox(VBox rootVBox){
         this.rootVBox = rootVBox;
     }
 

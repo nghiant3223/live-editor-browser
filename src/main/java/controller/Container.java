@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import observer.ObservableTextArea;
-import observer.ObserverTextArea;
+import observer.ObserverVBox;
 import singleton.GlobalCssProvider;
 
 import java.io.File;
@@ -14,9 +14,11 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class Container implements Initializable {
-    private static ObserverTextArea observerTextArea;
+    private static ObserverVBox observerVBox;
+
     @FXML
     private VBox rootVBox;
+
     @FXML
     private ObservableTextArea observableTextArea;
 
@@ -27,8 +29,8 @@ public class Container implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         observableTextArea.textProperty().addListener((inputTextAreaValue, s, s2) -> onChangeInputTxtEvent());
-        observerTextArea = new ObserverTextArea(this.rootVBox);
-        observableTextArea.addObserver(observerTextArea);
+        observerVBox = new ObserverVBox(this.rootVBox);
+        observableTextArea.addObserver(observerVBox);
 
         try {
             /* Read index.html */

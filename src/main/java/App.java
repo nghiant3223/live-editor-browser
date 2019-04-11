@@ -3,18 +3,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.jsoup.nodes.Element;
 
 public class App extends Application {
-    private static final String FILE_NAME = "index.html";
-    private static Element body;
-    private String fxmlFilename = "InputUI.fxml";
+    private String fxmlFilename = "Container.fxml";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource(fxmlFilename));
+
         Scene scene = new Scene(root);
-        primaryStage.setTitle("MiniBrowser");
+        primaryStage.setTitle("Live Browser");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
