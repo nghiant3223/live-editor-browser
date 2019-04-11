@@ -14,13 +14,16 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class Container implements Initializable {
-    private static ObserverVBox observerVBox;
+    private ObserverVBox outputVBox;
+
+    @FXML
+    private VBox lineIndicatorVBox;
 
     @FXML
     private VBox rootVBox;
 
     @FXML
-    private ObservableTextArea observableTextArea;
+    private ObservableTextArea inputTextArea;
 
     public Container() {
 
@@ -28,9 +31,9 @@ public class Container implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        observableTextArea.textProperty().addListener((inputTextAreaValue, s, s2) -> onChangeInputTxtEvent());
-        observerVBox = new ObserverVBox(this.rootVBox);
-        observableTextArea.addObserver(observerVBox);
+        outputVBox = new ObserverVBox(this.rootVBox);
+        inputTextArea.addObserver(outputVBox);
+        inputTextArea.textProperty().addListener((inputTextAreaValue, s, s2) -> onChangeInputTxtEvent());
 
         try {
             /* Read index.html */
@@ -39,12 +42,11 @@ public class Container implements Initializable {
 
             StringBuilder fileContentBuilder = new StringBuilder();
 
-            while (sc.hasNextLine()) {
-                fileContentBuilder.append(sc.nextLine() + "\n");
-            }
+            while (sc.hasNextLine()) { fileContentBuilder.append(sc.nextLine() + "\n"); }
 
+            fileContentBuilder.append("\b");
             String fileContent = fileContentBuilder.toString();
-            observableTextArea.setText(fileContent);
+            inputTextArea.setText(fileContent);
             GlobalCssProvider.updateStyle(fileContent);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -53,6 +55,6 @@ public class Container implements Initializable {
 
     public void onChangeInputTxtEvent() {
         rootVBox.getChildren().clear();
-        observableTextArea.notifyObservers();
+        inputTextArea.notifyObservers();
     }
 }

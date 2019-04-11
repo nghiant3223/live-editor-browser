@@ -1,37 +1,9 @@
-.panelTitle{
-    -fx-background-color: #7542af;
-}
-.labelTitle{
-    -fx-font-size: 30px;
-    -fx-text-fill: #fcf9f9;
-    -fx-alignment: center;
-}
-.paneSplit{
-    -fx-background-color:#c47bce;
-}
-.leftRightVBox{
-    -fx-background-color:#b3cbe5;
-}
-.labelInOutput{
-    -fx-font-weight: bold;
-    -fx-text-fill: #e01692;
-
-}
-.btnCompile{
-    -fx-font-weight: bold;
-    -fx-text-fill: #13bc07;
-}
-
-.ContainerAnchor{
-    -fx-background-color:#f48995;
-}
-
-.outputVBox{
+.inputTextArea, .outputVBox{
     -fx-background-color: #ffffff;
-    -fx-font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+    -fx-font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    -fx-border-radius: 0;
 }
 
-.inputVBox{
-    -fx-background-color: #ffffff;
-    -fx-font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif
+.lineIndicatorVBox{
+    -fx-background-color: white;
 }

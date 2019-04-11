@@ -1,39 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <?import observer.ObservableTextArea?>
-<AnchorPane prefHeight="549.0" prefWidth="827.0" styleClass="ContainerAnchor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Container">
+<AnchorPane maxHeight="600" maxWidth="800" styleClass="ContainerAnchor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Container">
    <children>
-      <Pane layoutX="202.0" layoutY="30.0" prefHeight="58.0" prefWidth="431.0" styleClass="panelTitle">
+      <HBox>
          <children>
-            <Label layoutX="113.0" layoutY="7.0" prefHeight="34.0" prefWidth="205.0" styleClass="labelTitle" text="HTML Parser" textFill="#642472">
-               <font>
-                  <Font name="Helvetica" size="30.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <HBox layoutX="45.0" layoutY="115.0" prefHeight="420.0" prefWidth="746.0">
-         <children>
-            <VBox prefHeight="420.0" prefWidth="371.0" styleClass="leftRightVBox">
+            <VBox fx:id="lineIndicatorVBox" prefHeight="600" prefWidth="20" styleClass="lineIndicatorVBox" />
+            <VBox prefHeight="420.0" prefWidth="371.0">
                <children>
-                  <Label prefHeight="33.0" prefWidth="70.0" styleClass="labelInOutput" text="Input HTML" />
-                  <ObservableTextArea fx:id="observableTextArea" prefHeight="361.0" prefWidth="366.0" styleClass="inputVBox"/>
+                  <ObservableTextArea fx:id="inputTextArea" prefHeight="600" prefWidth="380" styleClass="inputTextArea"/>
                </children>
             </VBox>
-            <Pane prefHeight="420.0" prefWidth="29.0" styleClass="paneSplit" />
-            <VBox layoutX="10.0" layoutY="10.0" prefHeight="420.0" prefWidth="362.0" styleClass="leftRightVBox">
-               <children>
-                  <Label prefHeight="33.0" prefWidth="84.0" styleClass="labelInOutput" text="Parsed Output" />
-                  <VBox fx:id="rootVBox" prefHeight="362.0" prefWidth="357.0" styleClass="outputVBox" />
-               </children>
-            </VBox>
+            <VBox fx:id="rootVBox" prefHeight="362.0" prefWidth="357.0" styleClass="outputVBox" />
          </children>
       </HBox>
    </children>
