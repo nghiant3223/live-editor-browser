@@ -12,7 +12,7 @@ import org.jsoup.nodes.TextNode;
 import util.CssParser;
 import util.CssProcess;
 import config.DefaultStyle;
-import util.GlobalCssProvider;
+import singleton.GlobalCssProvider;
 
 import java.util.DuplicateFormatFlagsException;
 import java.util.HashMap;

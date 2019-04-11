@@ -1,27 +1,30 @@
-package util;
+package singleton;
+
+import util.CssParser;
 
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class GlobalCssProvider {
+    private static GlobalCssProvider instance;
     private HashMap<String, HashMap<String, String>> styles;
     private HashSet<String> idSet;
-
-    private static GlobalCssProvider instance;
 
     private GlobalCssProvider(String document) {
         this.styles = CssParser.parseEmbeddedCss(document);
         this.idSet = new HashSet<>();
     }
 
-    public static void createInstance(String styles) {
-        if (instance == null) {
-            instance = new GlobalCssProvider(styles);
-        }
-    }
-
     public static GlobalCssProvider getInstance() {
         return instance;
+    }
+
+    public static void updateStyle(String styles) {
+        if (instance == null) {
+            instance = new GlobalCssProvider(styles);
+        } else {
+            instance.styles = CssParser.parseEmbeddedCss(styles);
+        }
     }
 
     public HashMap<String, String> getStyles(String key) {
