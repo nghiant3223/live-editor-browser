@@ -103,7 +103,7 @@ public class ConcreteVisitor implements Visitor {
 
         /* If content is not space, tab, newline, return, ... */
         if (!spaceMatcher.find()) {
-            Text text = new Text(content);
+            Text text = new Text(content.trim());
 
             /* Assign text suitable style and get actual style `textStyleToSet` for later setStyle() */
             StringBuilder textStyleToSet = new StringBuilder();
