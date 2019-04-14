@@ -1,25 +1,40 @@
 .inputTextArea {
     -fx-background-color: #ffffff;
     -fx-font-family: Inconsolata;
-    -fx-font-size: 16;
+    -fx-font-size: 15;
+}
+
+.inputTextArea:focused {
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color: transparent;
 }
 
 .outputVBox {
     -fx-background-color: #ffffff;
     -fx-font-size: 16;
+    -fx-border-width: 0 0 0 1;
     -fx-font-family: Arial, Verdana, sans-serif;
-    -fx-border-width: 0 0 0 2;
-    -fx-border-color: #ddf2f9;
+    -fx-border-color: #c9c8cb;
+}
+
+.outputVBox:focused {
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color: transparent;
 }
 
 .miniMapVBox {
     -fx-background-color: #ffffff;
     -fx-font-family: Inconsolata;
-    -fx-font-size: 2.963;
-    -fx-border-width: 2 0 2 2;
-    -fx-border-color: #ddf2f9;
+    -fx-font-size: 2.78;
+    -fx-border-width: 0 1 0 1;
+    -fx-border-color: #c9c8cb;
 }
 
 .lineIndicatorVBox{
-    -fx-padding: 7;
+    -fx-padding: 8;
+}
+
+.miniMapVBox:focused{
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color: transparent;
 }

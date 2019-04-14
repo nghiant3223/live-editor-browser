@@ -1,10 +1,13 @@
 package controller;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import observer.*;
 import singleton.GlobalCssProvider;
 
@@ -36,6 +39,8 @@ public class Container implements Initializable {
         inputTextArea.textProperty().addListener(this::handleInputChanged);
         inputTextArea.addEventFilter(KeyEvent.KEY_PRESSED, this::handleTabTapped);
 
+        Bindings.bindBidirectional(inputTextArea.scrollLeftProperty(), observerMiniMapTextArea.scrollLeftProperty());
+
         try {
             /* Read index.html */
             File file = new File("./src/main/java/index.html");
@@ -54,7 +59,7 @@ public class Container implements Initializable {
         }
     }
 
-    private void handleInputChanged(ObservableValue<? extends String> ignoredParam1, String ignoreParam2, String ignoreParam3) {
+    private void handleInputChanged(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
         observerDisplayVBox.getChildren().clear();
         inputTextArea.notifyObservers();
     }
