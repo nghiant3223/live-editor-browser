@@ -1,14 +1,11 @@
 package controller;
 
-import javafx.event.EventHandler;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
-import observer.ObservableTextArea;
-import observer.ObserverLineIndicatorVBox;
-import observer.ObserverVBox;
+import observer.*;
 import singleton.GlobalCssProvider;
 
 import java.io.File;
@@ -19,33 +16,25 @@ import java.util.Scanner;
 
 public class Container implements Initializable {
     @FXML
-    private VBox lineIndicatorVBox;
+    private ObserverLineIndicatorVBox lineIndicatorVBox;
 
     @FXML
-    private VBox rootVBox;
+    private ObserverDisplayVBox observerDisplayVBox;
 
     @FXML
     private ObservableTextArea inputTextArea;
 
-    public Container() {
-
-    }
+    @FXML
+    private ObserverMiniMapTextArea observerMiniMapTextArea;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObserverVBox outputVBox = new ObserverVBox(this.rootVBox);
-        ObserverLineIndicatorVBox lineIndicatorVBox = new ObserverLineIndicatorVBox(this.lineIndicatorVBox);
-
-        inputTextArea.addObserver(outputVBox);
+        inputTextArea.addObserver(observerDisplayVBox);
         inputTextArea.addObserver(lineIndicatorVBox);
-        inputTextArea.textProperty().addListener((inputTextAreaValue, s, s2) -> onChangeInputTxtEvent());
-        inputTextArea.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-            if (e.getCode() == KeyCode.TAB) {
-                String s = "    ";
-                inputTextArea.insertText(inputTextArea.getCaretPosition(), s);
-                e.consume();
-            }
-        });
+        inputTextArea.addObserver(observerMiniMapTextArea);
+
+        inputTextArea.textProperty().addListener(this::handleInputChanged);
+        inputTextArea.addEventFilter(KeyEvent.KEY_PRESSED, this::handleTabTapped);
 
         try {
             /* Read index.html */
@@ -65,8 +54,16 @@ public class Container implements Initializable {
         }
     }
 
-    public void onChangeInputTxtEvent() {
-        rootVBox.getChildren().clear();
+    private void handleInputChanged(ObservableValue<? extends String> ignoredParam1, String ignoreParam2, String ignoreParam3) {
+        observerDisplayVBox.getChildren().clear();
         inputTextArea.notifyObservers();
+    }
+
+    private void handleTabTapped(KeyEvent event) {
+        if (event.getCode() == KeyCode.TAB) {
+            String s = "    ";
+            inputTextArea.insertText(inputTextArea.getCaretPosition(), s);
+            event.consume();
+        }
     }
 }

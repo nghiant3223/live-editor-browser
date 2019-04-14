@@ -1,7 +1,7 @@
 .inputTextArea {
     -fx-background-color: #ffffff;
     -fx-font-family: Inconsolata;
-    -fx-font-size: 15;
+    -fx-font-size: 16;
 }
 
 .outputVBox {
@@ -9,6 +9,14 @@
     -fx-font-size: 16;
     -fx-font-family: Arial, Verdana, sans-serif;
     -fx-border-width: 0 0 0 2;
+    -fx-border-color: #ddf2f9;
+}
+
+.miniMapVBox {
+    -fx-background-color: #ffffff;
+    -fx-font-family: Inconsolata;
+    -fx-font-size: 2.963;
+    -fx-border-width: 2 0 2 2;
     -fx-border-color: #ddf2f9;
 }
 

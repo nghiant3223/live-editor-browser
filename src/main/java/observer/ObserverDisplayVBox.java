@@ -10,13 +10,7 @@ import singleton.GlobalCssProvider;
 import visitor.ConcreteVisitor;
 import java.util.HashMap;
 
-public class ObserverVBox implements   Observer<String> {
-    private VBox rootVBox;
-
-    public ObserverVBox(VBox rootVBox){
-        this.rootVBox = rootVBox;
-    }
-
+public class ObserverDisplayVBox extends VBox implements Observer<String> {
     @Override
     public void update(String state){
         Document document = Jsoup.parse(state);
@@ -24,6 +18,6 @@ public class ObserverVBox implements   Observer<String> {
         VisitableAdapter bodyVisitableAdapter = new ElementAdapter(body);
 
         GlobalCssProvider.updateStyle(state);
-        bodyVisitableAdapter.accept(new ConcreteVisitor(), this.rootVBox, new HashMap<>());
+        bodyVisitableAdapter.accept(new ConcreteVisitor(), this, new HashMap<>());
     }
 }

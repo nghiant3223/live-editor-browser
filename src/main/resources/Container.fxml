@@ -5,18 +5,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import observer.ObservableTextArea?>
 
-<AnchorPane maxHeight="600" maxWidth="1200" styleClass="ContainerAnchor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Container">
-   <children>
-      <HBox spacing="-2">
-         <children>
-            <VBox fx:id="lineIndicatorVBox" prefHeight="600" prefWidth="20" styleClass="lineIndicatorVBox" />
-            <VBox prefHeight="600" prefWidth="590" >
-               <children>
-                  <ObservableTextArea fx:id="inputTextArea" prefHeight="600" prefWidth="590" styleClass="inputTextArea"/>
-               </children>
-            </VBox>
-            <VBox fx:id="rootVBox" prefHeight="600" prefWidth="590" styleClass="outputVBox" />
-         </children>
-      </HBox>
-   </children>
+<?import observer.ObserverMiniMapTextArea?>
+<?import observer.ObserverDisplayVBox?>
+<?import observer.ObserverLineIndicatorVBox?>
+<AnchorPane maxHeight="600" maxWidth="1200" styleClass="ContainerAnchor" stylesheets="@styles.css"
+            xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.Container">
+    <children>
+        <HBox spacing="-2">
+            <children>
+                <ObserverLineIndicatorVBox fx:id="lineIndicatorVBox" prefHeight="600" prefWidth="20" styleClass="lineIndicatorVBox"/>
+                <ObservableTextArea fx:id="inputTextArea" prefHeight="600" prefWidth="540" styleClass="inputTextArea"/>
+                <ObserverMiniMapTextArea fx:id="observerMiniMapTextArea" prefHeight="600" prefWidth="100" styleClass="miniMapVBox"/>
+                <ObserverDisplayVBox fx:id="observerDisplayVBox" prefHeight="600" prefWidth="540" styleClass="outputVBox"/>
+            </children>
+        </HBox>
+    </children>
 </AnchorPane>
