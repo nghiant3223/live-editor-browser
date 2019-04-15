@@ -16,7 +16,7 @@
             <children>
                 <ObserverLineIndicatorVBox fx:id="lineIndicatorVBox" prefHeight="600" prefWidth="20" styleClass="lineIndicatorVBox"/>
                 <ObservableTextArea fx:id="inputTextArea" prefHeight="600" prefWidth="540" styleClass="inputTextArea"/>
-                <ObserverMiniMapTextArea fx:id="observerMiniMapTextArea" prefHeight="600" prefWidth="100" styleClass="miniMapVBox"/>
+                <ObserverMiniMapTextArea fx:id="observerMiniMapTextArea" prefHeight="600" prefWidth="100" styleClass="miniMapVBox" disable="true"/>
                 <ObserverDisplayVBox fx:id="observerDisplayVBox" prefHeight="600" prefWidth="540" styleClass="outputVBox"/>
             </children>
         </HBox>

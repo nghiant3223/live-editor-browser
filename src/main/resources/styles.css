@@ -30,7 +30,11 @@
     -fx-border-color: #c9c8cb;
 }
 
-.lineIndicatorVBox{
+.miniMapVBox:disabled {
+    -fx-opacity: 1.0 ;
+}
+
+.lineIndicatorVBox {
     -fx-padding: 8;
 }
 
